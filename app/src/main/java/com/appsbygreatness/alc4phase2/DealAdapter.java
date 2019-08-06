@@ -15,27 +15,24 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder>{
 
-    ArrayList<TravelDeal> deals;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    private ArrayList<TravelDeal> deals;
 
-    public DealAdapter(){
+    DealAdapter(){
         FirebaseUtils.openDatabaseReference("traveldeals", FirebaseUtils.caller);
         this.deals = FirebaseUtils.deals;
-        firebaseDatabase = FirebaseUtils.firebaseDatabase;
-        databaseReference = FirebaseUtils.databaseReference;
+        DatabaseReference databaseReference = FirebaseUtils.databaseReference;
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 TravelDeal travelDeal = dataSnapshot.getValue(TravelDeal.class);
+                assert travelDeal != null;
                 travelDeal.setId(dataSnapshot.getKey());
                 deals.add(travelDeal);
                 notifyItemInserted(deals.size() -1);
@@ -90,7 +87,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder>{
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)
                     .into(holder.imageView);
-
     }
 
     @Override
@@ -102,7 +98,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder>{
         TextView title, price, description;
         ImageView imageView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.titleTV);
@@ -117,7 +113,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder>{
         public void onClick(View view) {
             int position = getAdapterPosition();
             TravelDeal selectedDeal = deals.get(position);
-            Intent intent = new Intent(view.getContext(), DealDetailsActivity.class);
+            Intent intent = new Intent(view.getContext(), DealActivity.class);
             intent.putExtra("Deal", selectedDeal);
             view.getContext().startActivity(intent);
         }

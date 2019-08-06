@@ -1,10 +1,12 @@
 package com.appsbygreatness.alc4phase2;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,17 +20,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class DealDetailsActivity extends AppCompatActivity {
+public class DealActivity extends AppCompatActivity {
 
     public static final int IMPORT_IMAGE = 5555;
     FirebaseDatabase firebaseDatabase;
@@ -40,11 +41,16 @@ public class DealDetailsActivity extends AppCompatActivity {
     ImageView imageView;
 
     private String imageUrl;
+    private Button importImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_deal);
+
+        assert getSupportActionBar() !=null;
+        getSupportActionBar().setTitle("TravelMantics");
+
         FirebaseUtils.openDatabaseReference("traveldeals",this);
         firebaseDatabase = FirebaseUtils.firebaseDatabase;
         databaseReference = FirebaseUtils.databaseReference;
@@ -54,7 +60,7 @@ public class DealDetailsActivity extends AppCompatActivity {
         descriptionET = findViewById(R.id.descriptionDetailET);
         imageView = findViewById(R.id.imageDetail);
 
-        Button importImageButton = findViewById(R.id.importImageButton);
+        importImageButton = findViewById(R.id.importImageButton);
         importImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +68,7 @@ public class DealDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/jpeg");
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(intent.createChooser(intent, "Insert Picture"), IMPORT_IMAGE);
+                startActivityForResult(Intent.createChooser(intent, "Insert Picture"), IMPORT_IMAGE);
             }
         });
 
@@ -76,7 +82,7 @@ public class DealDetailsActivity extends AppCompatActivity {
         titleET.setText(deal.getTitle());
         priceET.setText(deal.getPrice());
         descriptionET.setText(deal.getDescription());
-        Picasso.get().load(deal.getImageUrl()).into(imageView);
+        loadImage(deal.getImageUrl());
 
 
     }
@@ -86,7 +92,28 @@ public class DealDetailsActivity extends AppCompatActivity {
         MenuInflater menuInflater = new MenuInflater(this);
         menuInflater.inflate(R.menu.save, menu);
 
+        if(FirebaseUtils.isAdmin){
+
+            menu.findItem(R.id.deleteDeal).setVisible(true);
+            menu.findItem(R.id.saveDeal).setVisible(true);
+            enableEditTexts(true);
+            importImageButton.setEnabled(true);
+
+        }else {
+            menu.findItem(R.id.deleteDeal).setVisible(false);
+            menu.findItem(R.id.saveDeal).setVisible(false);
+            enableEditTexts(false);
+            importImageButton.setEnabled(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void enableEditTexts(boolean b) {
+
+        titleET.setEnabled(b);
+        priceET.setEnabled(b);
+        descriptionET.setEnabled(b);
     }
 
     @Override
@@ -106,9 +133,7 @@ public class DealDetailsActivity extends AppCompatActivity {
         deal.setTitle(titleET.getText().toString());
         deal.setPrice(priceET.getText().toString());
         deal.setDescription(descriptionET.getText().toString());
-        if (imageUrl != null){
-            deal.setImageUrl(imageUrl);
-        }
+
 
         if(deal.getId() == null){
             //Save as new deal
@@ -131,6 +156,21 @@ public class DealDetailsActivity extends AppCompatActivity {
             return;
         }
         databaseReference.child(deal.getId()).removeValue();
+
+        if(deal.getImageName() != null && !deal.getImageName().isEmpty()){
+            StorageReference picRef = FirebaseUtils.firebaseStorage.getReference().child(deal.getImageName());
+            picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.i("ImageDelete", "successful");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i("ImageDelete", "failed");
+                }
+            });
+        }
         Toast.makeText(this, "Deleted deal successfully", Toast.LENGTH_LONG).show();
         finish();
     }
@@ -143,24 +183,24 @@ public class DealDetailsActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.INVISIBLE);
 
+            assert data != null;
             final Uri imageUri = data.getData();
-
-            Log.i("Url", "About to get Uri");
 
 
             final StorageReference ref = FirebaseUtils.storageReference.child(imageUri.getLastPathSegment());
             ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    deal.setImageName(taskSnapshot.getStorage().getPath());
 
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             imageUrl = uri.toString();
                             deal.setImageUrl(uri.toString());
-                            Log.i("Url", "download url is: "+uri.toString());
                             progressBar.setVisibility(View.GONE);
                             imageView.setVisibility(View.VISIBLE);
+                            imageView.setMinimumWidth(Resources.getSystem().getDisplayMetrics().widthPixels);
                             imageView.setImageURI(imageUri);
                             Toast.makeText(getApplicationContext(), "Image uploaded sucsessfully", Toast.LENGTH_LONG).show();
                         }
@@ -168,5 +208,13 @@ public class DealDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void loadImage(String url){
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        Picasso.get().load(url)
+                .resize(width, width * 2/3)
+                .centerCrop()
+                .into(imageView);
     }
 }

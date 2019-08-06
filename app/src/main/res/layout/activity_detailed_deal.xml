@@ -4,25 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DealDetailsActivity">
+    tools:context=".DealActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp">
+        >
 
         <EditText
             android:id="@+id/titleDetailET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp"
-            android:hint="@string/title_tv_hint" />
+            android:ems="10"
+            android:hint="@string/title_tv_hint"
+            android:inputType="textPersonName|textCapSentences"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"/>
 
         <EditText
             android:id="@+id/priceDetailET"
@@ -34,19 +35,23 @@
             android:inputType="number|textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleDetailET" />
+            app:layout_constraintTop_toBottomOf="@id/titleDetailET"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"/>
 
         <EditText
             android:id="@+id/descriptionDetailET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:layout_constraintTop_toBottomOf="@id/priceDetailET"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp"
-            android:hint="@string/description_tv_hint"/>
+            android:ems="10"
+            android:hint="@string/description_tv_hint"
+            android:inputType="textPersonName|textCapSentences"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceDetailET"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"/>
 
         <Button
             android:id="@+id/importImageButton"
