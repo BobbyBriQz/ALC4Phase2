@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ALC 4 Phase 2</string>
+    <string name="rv_image_description">RecyclerView row image</string>
+    <string name="add_button_text">SELECT IMAGE</string>
+    <string name="imageView_Content_Description">image selected from phone</string>
+    <string name="title_tv_hint">Enter title</string>
+    <string name="price_tv_hint">Enter price</string>
+    <string name="description_tv_hint">Enter description</string>
+    <string name="add_menu_title">Add New Deal</string>
+</resources>

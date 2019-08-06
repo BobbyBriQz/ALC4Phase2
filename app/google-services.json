@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "660525697520",
+    "firebase_url": "https://alc-4-phase-2.firebaseio.com",
+    "project_id": "alc-4-phase-2",
+    "storage_bucket": "alc-4-phase-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660525697520:android:562d29c02a2509c3",
+        "android_client_info": {
+          "package_name": "com.appsbygreatness.alc4phase2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660525697520-8lqlmkj0sdvjuq2ke7ss9vadpa813ise.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsbygreatness.alc4phase2",
+            "certificate_hash": "c00232f9b429bf50332d9fed0b6d2ea7e4349874"
+          }
+        },
+        {
+          "client_id": "660525697520-jv57pdulfkpvcl8glc4m34tdkv95b74n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX1_Wb4X4XXkBDMuocPM1x9QYi3fnaXd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660525697520-jv57pdulfkpvcl8glc4m34tdkv95b74n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
