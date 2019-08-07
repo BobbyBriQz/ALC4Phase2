@@ -46,7 +46,7 @@ public class DealActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed_deal);
+        setContentView(R.layout.activity_deal);
 
         assert getSupportActionBar() !=null;
         getSupportActionBar().setTitle("TravelMantics");

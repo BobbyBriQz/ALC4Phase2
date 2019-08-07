@@ -54,8 +54,8 @@ public class FirebaseUtils {
 
                     }else {
                         String userId = firebaseAuth.getUid();
-                        Log.i("Admin", userId);
                         checkAdmin(userId);
+
                     }
 
                 }
@@ -101,13 +101,11 @@ public class FirebaseUtils {
 
         DatabaseReference ref = firebaseDatabase.getReference().child("administrators")
                 .child(uid);
-        Log.i("Admin", "Reached here");
+
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 FirebaseUtils.isAdmin = true;
-
-                Log.i("Admin", dataSnapshot.toString());
 
             }
 

@@ -15,7 +15,6 @@ import com.firebase.ui.auth.AuthUI;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class ListActivity extends AppCompatActivity {
@@ -25,7 +24,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list);
 
         assert getSupportActionBar() !=null;
         getSupportActionBar().setTitle("TravelMantics");
