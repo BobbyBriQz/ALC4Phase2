@@ -11,7 +11,7 @@ public class TravelDeal implements Serializable {
     private String imageUrl;
     private String imageName;
 
-    TravelDeal(){}
+    public TravelDeal(){}
 
     public TravelDeal(String title, String price, String description, String imageUrl, String imageName) {
         this.title = title;
@@ -29,7 +29,7 @@ public class TravelDeal implements Serializable {
         this.id = id;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -37,7 +37,7 @@ public class TravelDeal implements Serializable {
         this.title = title;
     }
 
-    String getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -45,7 +45,7 @@ public class TravelDeal implements Serializable {
         this.price = price;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 

@@ -1,8 +1,6 @@
 package com.appsbygreatness.alc4phase2;
 
 import android.app.Activity;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.auth.AuthUI;

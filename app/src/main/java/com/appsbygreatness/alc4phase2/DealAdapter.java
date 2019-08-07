@@ -23,7 +23,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder>{
 
     private ArrayList<TravelDeal> deals;
 
-    DealAdapter(){
+    public DealAdapter(){
         FirebaseUtils.openDatabaseReference("traveldeals", FirebaseUtils.caller);
         this.deals = FirebaseUtils.deals;
         DatabaseReference databaseReference = FirebaseUtils.databaseReference;
